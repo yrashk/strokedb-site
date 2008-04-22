@@ -1,0 +1,254 @@
+<!DOCTYPE nasty html by oleganza>
+<html>
+  <head>
+    <title>StrokeDB FAQ</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <style>
+      body {
+        font-size:100%;
+        padding:0;
+        margin:0;
+      }
+      a {
+        color:#003399;
+      }
+      a:visited {
+        color:#330066;
+      }
+      a:hover {
+        color:#0033ff;
+      }
+      p, ul {
+        font: 1.2em serif;
+        color:#333333;
+        margin:0.3em 0 1em 0;
+      }
+      
+      ul {
+        padding:0 0 0 1em;
+      }
+      
+      li {
+        margin:0 0 0.2em 0;
+        padding:0;
+        font-size:90%;
+      }
+      
+      code {
+        font:0.7em Monaco, Consolas, Lucida Console, monospace;
+      }
+      
+      h1, h2, h3 {
+        color:black;
+      }
+      h1 { 
+        margin:1.2em 0 0 0;
+        font: bold 1.8em Garamond, Georgia, serif; 
+        }
+      h2 { 
+        margin:1.2em 0 0 0;
+        font: bold 1.3em Garamond, Georgia, serif; 
+        }
+      h3 { 
+        margin:1.1em 0 0 0;
+        font: bold 1.1em Garamond, Georgia, serif; 
+        }
+          
+      #header {
+        xwidth:100%;
+        text-align:center;
+        padding:1.5em;
+        background-color:black;
+        margin:0 0 2em 0;
+      }
+      #container {
+        position:relative;
+        left:50%;
+        width:500px;
+        margin-left:-250px;
+        padding:0;
+        margin-bottom:6em;
+      }
+      #menu {
+        position:absolute;
+        font-size:90%;
+        top:9em;
+        right:-230px;
+        width:200px;
+        margin:0;
+        padding:0;
+      }
+    </style>
+	</head>
+  <body>
+    <div id="header">
+      <a href="/"><img src="strokedb-biglogo.gif" alt="StrokeDB. Store Different." style="border:none" /></a>
+    </div>
+    
+    <div id="container">
+      <h1>FAQ</h1>
+      
+      <h2>What “document-oriented” means? What about relational model?</h2>
+        <p>
+          StrokeDB design emphasizes the concept of schemaless documents residing 
+          in a global space and connected between each other using references (“hyperlinks”).
+          You <em>can</em> implement a relational database in a sixth normal form using StrokeDB,
+          but you are never constrained to a strict relational model and can violate it 
+          any time you want.
+        </p>
+        <p>
+          There’s nothing wrong with <a href="http://en.wikipedia.org/wiki/Relational_model">relational model</a> itself. It is just a mathematical concept, “SQL interface”, that’s it.
+          The most interesting thing is an actual implementation. 
+          Most of us experience hard to solve issues with MySQL or PostgreSQL because of how 
+          they store data and what requirements they put upon a user. 
+          StrokeDB is also a relational database, but it is not limited to this model and is not
+          specifically optimized for this model only.
+        </p>
+        <p>
+          <small>See “<a href="http://whydoeseverythingsuck.com/2008/02/death-of-relational-database.html">The Death of the Relational Database</a>” describing some issues with RDBMS.</small>
+        </p>
+      
+        <h2>Okay, I’m a Rails developer. What&nbsp;StrokeDB buys me?</h2>
+        <p>
+          Forget about migrations. You would only need some Rake tasks to
+          modify either existing documents, or existing indexes. Migrations in 
+          such case is a must-have, and you know what? They could be stored 
+          right in your database and do their job automatically, when current 
+          database replica is known to be stale <small>(e.g. metadocument described in a source code 
+          was not found in a storage)</small>.
+        </p>
+        <p>
+          StrokeDB offers straight-forward object-oriented wrapper for JSON data.
+          It is much easier to hack, extend and optimize, than ActiveRecord.
+          <br/>
+          Compare these <a href="http://pastie.org/170188">snippets</a>
+           from a real-world application to get an idea.
+        </p>
+        <p>
+          You may configure your production, test and development databases
+          differently and use <em>the very same data</em> in them easily.
+          You may run production database on a cluster, develop with a portion 
+          of <em>that</em> data on your local disk and run tests keeping all the documents
+          in a fastest memory storage. You won’t need any <a href="http://blog.jayfields.com/2006/09/rubyrails-unit-testing-in-less-than-1.html">dirty tricks</a>
+          faking your SQL database with in-memory fixtures.
+        </p>
+        <p>
+          StrokeDB is easier at caching.
+          Actually, there is no need in implementing and maintaining a cache. Instead, you may 
+          just configure a chain of <em>in-memory</em> and <em>file-based</em> storages for the fast and <em>correct</em> access to the frequently used data. (Memcached may be used as well.) 
+          This is a <em>huge</em> thing for those, who hate debugging cached data on production machines.
+        </p>
+
+        <h2>Why don’t you just take...</h2>
+        <h3>CouchDB?</h3>
+        <p><small>
+          <a href="http://incubator.apache.org/couchdb/">CouchDB</a> is very nice, but has several disadvantages for us.
+          We plan to port a kernel of the StrokeDB to “thin client” languages 
+          (JavaScript, ActionScript etc.) to enable offline work with the data
+          with the very same features server version has. CouchDB is written
+          in Erlang and that’s the first problem.<br/>
+          Another thing is that CouchDB doesn’t scale data properly yet.
+          It <a href="http://incubator.apache.org/couchdb/roadmap.html">lacks distributed indexes and storages</a>.<br/>
+          There’s also a huge argument for pure-Ruby version: StrokeDB integrates so
+          well with Ruby apps, so it is a pleasure to configure different environments and
+          optimize performance by injecting the database right into your application.
+          </small>
+        </p>
+
+        <h3>ThruDB?</h3>
+        <p>
+          <small>
+          <a href="http://code.google.com/p/thrudb/">ThruDB</a> is less nice, than CouchDB :-) It has even simpler
+          data storage facilities and lacks some important features (like revision control). 
+          Unfortunately there’s more marketing buzz, than actual documentation.
+          <br/>
+          All the concerns about CouchDB are also applicable to ThruDB.
+          However, we have stolen several interesting design ideas (e. g. storage chaining)
+          from ThruDB.
+          </small>
+        </p>
+
+        <h3>Oracle?</h3>
+        <p>
+          <small>
+          The first concern about it is non-technical. Oracle is hard to 
+          work with for the very simple reason: very difficult to configure,
+          very difficult to find gurus working with it day to day, and it is
+          not an open source.
+          But most importantly, it is still a RDBMS. With the same <a href="http://lesscode.org/2005/09/29/should-database-manage-the-meaning/">useless</a> advanced 
+          features (e.g. foreign key constraints, stored procedures etc.), and
+          there’s still no facility for partial replication and revision tracking. 
+          Scalability aspects are under a big question mark: they seem to be 
+          very advanced, but we don’t have any time or passion to investigate this
+          in deep.
+          </small>
+        </p>
+
+        <h3>GemStone?</h3>
+        <p>
+          <small>
+          GemStone is a powerful persistance layer above the native Smalltalk object database. 
+          We could use GemStone if we’d worked with Smalltalk instead of Ruby.
+          But we’ve chosen latter. C’est la vie.
+          </small>
+        </p>
+
+        <p><small>In case we’ve missed something on this topic, you can always <a href="/#contacts">contact us</a>
+           and give some advice.</small></p>
+      
+      
+      <h2>What about performance?</h2>
+        <p>
+          It is poor comparing to MySQL, but it is probably comparable to SQLite.
+          We have several benchmarks in the <a href="http://gitorious.org/projects/strokedb/repos/mainline">repository</a>, however we have not yet compared performance between SQLite, MySQL and StrokeDB.
+          When several mission-critical features are ready, we will prepare a shootout benchmark suite.
+        </p>
+        <p>
+          We don’t care much about performance for now. The most important thing is to improve
+          API and get it running in a distributed environment.
+          However, we have an interesting facility for portable optimizations already 
+          (<a href="http://gitorious.org/projects/strokedb/repos/mainline/blobs/577a325ced745f79066f283f7a0431d6342f9e73/strokedb-ruby/lib/util/class_optimization.rb">lib</a>, 
+          <a href="http://gitorious.org/projects/strokedb/repos/mainline/blobs/577a325ced745f79066f283f7a0431d6342f9e73/strokedb-ruby/lib/data_structures/simple_skiplist.rb">usage</a>).
+        </p>
+
+        <br/>
+		<h2>Do you know that your project name is odd?</h2>
+		<p>Yeah, definitely! So what? :)</p>
+      <p><em>More Q/A to come. Stay tuned on <a href="http://t.strokedb.com"><strong>t</strong>.strokedb.com</a>.</em></p>
+
+      <p>
+        <small>
+          <a href="/">Back to frontpage</a>.
+        </small>
+      </p>
+    <!-- end of container -->  
+    </div>
+    
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+    _uacct = "UA-1584663-4";
+    urchinTracker();
+    </script>
+    
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

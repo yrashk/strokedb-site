@@ -1,0 +1,273 @@
+<!DOCTYPE nasty html by oleganza>
+<html>
+  <head>
+    <title>StrokeDB</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <style>
+      body {
+        font-size:100%;
+        padding:0;
+        margin:0;
+      }
+      a {
+        color:#003399;
+      }
+      a:visited {
+        color:#330066;
+      }
+      a:hover {
+        color:#0033ff;
+      }
+      p, ul {
+        font: 1.2em serif;
+        color:#333333;
+        margin:0.3em 0 1em 0;
+      }
+      
+      ul {
+        padding:0 0 0 1em;
+      }
+      
+      li {
+        margin:0 0 0.2em 0;
+        padding:0;
+        font-size:90%;
+      }
+      
+      code {
+        font:0.7em Monaco, Consolas, Lucida Console, monospace;
+      }
+      
+      h1, h2 {
+        color:black;
+      }
+      h1 { 
+        margin:1.1em 0 0 0;
+        font: bold 1.8em Garamond, Georgia, serif; 
+        }
+      h2 { 
+        margin:1.1em 0 0 0;
+        font: bold 1.3em Garamond, Georgia, serif; 
+        }
+      
+      #header {
+        xwidth:100%;
+        text-align:center;
+        padding:1.5em;
+        background-color:black;
+        margin:0 0 2em 0;
+      }
+      #container {
+        position:relative;
+        left:50%;
+        width:500px;
+        margin-left:-250px;
+        padding:0;
+        margin-bottom:6em;
+      }
+      #menu {
+        position:absolute;
+        font-size:90%;
+        top:9em;
+        right:-250px;
+        width:200px;
+        margin:0;
+        padding:0;
+      }
+      #announce {
+        color:black;
+        background:#ffff44;
+        padding:1em;
+      }
+    </style>
+	</head>
+  <body>
+    <div id="header">
+      <img src="strokedb-biglogo.gif" alt="StrokeDB. Store Different." />
+    </div>
+    
+    <div id="container">
+      
+      <p>
+        <span style="color:black;font-size:120%">
+        StrokeDB is an embeddable distributed document database written in 
+        <a href="http://ruby-lang.org">Ruby</a>. It is schema-free, it
+        scales infinitely, it even tracks revisions and perfectly
+        integrates with Ruby applications.
+        </span>
+      </p>
+      
+      <h1>Motivation</h1>
+      <p>
+        Relational databases are widespread and well-known.
+        However, in RDBMS we constantly meet hard to solve issues:
+        schema migrations, large table schema updates,
+        continuous data sharding, partial replication.
+        <br/>
+        We are trying to solve these issues with StrokeDB.
+      </p>
+      <p>
+        <em>Check out this <a href="http://blog.labnotes.org/2007/09/20/read-consistency-dumb-databases-smart-services/">article on dumb databases and read/write consistency</a> (September 20, 2007). It describes the main issues with RDBMS and clarifies our intentions. Actually, I’ve never seen it before today (March 24, 2008), but it is so-o true. It is a must-read for everyone interested in a StrokeDB.</em>
+      </p>
+      
+      <h1>Features</h1>
+      <ul>
+        <li>Flat address space of documents identified by <a href="http://en.wikipedia.org/wiki/UUID" title="Universal Unique Identifier">UUIDs</a>.</li>
+        <li><a href="http://www.json.org/" title="JavaScript Object Notation">JSON</a>, schemaless document format.</li>
+        <li>Flexible object-oriented API for documents operations. 
+            Much nicer and consistent than <a href="http://rubyonrails.com">ActiveRecord</a> API.</li>
+        <li>Meta documents with serialized definitions and executable code mixins.</li>
+        <li>Documents revision control with diff/merge facilities built-in.</li>
+        <li>References to other documents with automatic eager loading on access.</li>
+        <li>Chunked storages (allowing you to distribute the data across the cluster).</li>
+        <li>Storage chains facility for load balancing.</li>
+        <li>Simple search index over document slots.</li>
+        <li>UTF-8 support built-in. No need to configure encoding in 23 different places like in M*SQL.</li>
+        <li>Two major Ruby implementations support <small>(Ruby 1.8.6, JRuby 1.1RC1)</small>.</li>
+        <li>Unit-, integration- and regression tests using RSpec.</li>
+      </ul>
+      
+        
+      <a name="st" href="#"></a>
+      <h1>Current status</h1>
+      <p>
+        StrokeDB is an experiment. It is only 2.5 months old 
+        and contains a clean and working code along with 
+        crazy experiments and API inconsistencies.
+      </p>
+      <p>
+        For now, you can use it as a replacement for SQLite,
+        however it doesn’t support complex queries. Current version
+        includes nice object-oriented API, revision control, 
+        simple general-purpose index, memory- and file-based storages, 
+        simple DRb interface, IRb console and incremental views (like in CouchDB). 
+      </p>
+      <p>
+        Also, there are some useful facilities interesting for developers only.
+        Like a collection of <a href="http://gitorious.org/projects/strokedb/repos/mainline/trees/master/strokedb-ruby/lib/sync/stroke_diff">diff/merge algorithms</a> or a portable <a href="http://gitorious.org/projects/strokedb/repos/mainline/blobs/new-storages/strokedb-ruby/lib/util/class_optimization.rb">class optimization framework</a> (allowing you to optimize ruby methods with a native code).
+      </p>
+      <p>
+        You may track progress using <a href="http://gitorious.org/projects/strokedb/repos/mainline">Gitorious</a>, 
+        our primary repository hosting.
+      </p>
+
+      <h1>Roadmap</h1>
+      <p>
+        The first “serious” release of the StrokeDB will include all the 
+        features declared above.
+      </p>
+      <p>Further plans include <small>(higher position — higher priority)</small>:</p>
+      <ul>
+        <li>Flexible API for custom search indexes.</li>
+        <li>Advanced network protocols with <a href="http://rubyeventmachine.com">EventMachine</a> and 
+            <a href="http://gitorious.org/projects/eventmachine-utils">EM Utils</a> for distributed access and realtime load analysis.
+        </li>
+        <li>Batch data import from ActiveRecord.</li>
+        <li>Simple HTTP browser and editor (something like git-web, phpMyAdmin etc.).</li>
+        <li>Advanced associations and validations API.</li>
+        <li>Various optimizations using native code (C, Java) 
+            and smarter algorithms to preserve data locality and save network
+            bandwidth.</li>
+        <li>Support for Ruby 1.9 and Rubinius. Ruby 1.9 is a real thing already, however major code review is neccessary. Rubinius doesn’t support important libraries yet (rubygems, activesupport).</li>
+      </ul>
+      
+      <a name="slides" href="#"></a>
+      <h1>Slides</h1>
+      <p>
+        <a href="exception.org.ua-slides.pdf">Slides from exception.org.ua conference</a> 
+        <small>(Kyiv, Ukraine, March 15, 2008) (14 Mb)</small>
+      </p>
+      <p>
+        <a href="euruko2008.pdf">Euruko 2008 slides</a> <small>(Prague, Czech Republic, March 30, 2008) (12 Mb)</small>
+      </p>
+
+      
+      <a name="the-code" href="#"></a>
+      <h1>The code</h1>
+      
+      <p>StrokeDB source is stored in a <a href="http://git.or.cz">Git</a> repositories. Choose a public repository to clone from:</p> 
+      <p>
+        <code>
+          $ git clone git://gitorious.org/strokedb/mainline.git strokedb
+        </code>
+      </p>
+      <p><small>Mirror on GitHub (master branch only):</small><p>
+      <p>
+        <code>
+          $ git clone git://github.com/yrashk/strokedb.git strokedb
+        </code>
+      </p>
+      <p>
+        You can also <a href="http://github.com/yrashk/strokedb/tarball/master">grab a latest snapshot</a> (from GitHub)
+        </p>
+      <p>
+        StrokeDB is licensed under terms of the most liberal <a href="http://gitorious.org/projects/strokedb/repos/mainline/blobs/master/strokedb-ruby/MIT-LICENSE">MIT&nbsp;License</a>. Feel free to use it and hack it the way you want, even in commercial applications.
+      </p>
+
+
+      <a name="contacts" href="#"></a>
+      <h1>Contacts</h1>
+      
+      <p>You can find us on <b>#strokedb</b> channel (irc.freenode.net).</p>
+      <p>There is also a <a href="http://groups.google.com/group/strokedb">mailing list</a>. Feel free to ask questions, make suggestions etc.</p>
+
+
+      <h1>Authors</h1>
+      
+      <p>Yurii Rashkovskii, <a href="http://rashkovskii.com">rashkovskii.com</a></p>
+      <p>Oleg Andreev, <a href="http://oleganza.wordpress.com">oleganza.wordpress.com</a></p>
+    
+    
+      <div id="menu">
+        <p>
+          <strong><a href="#the-code">Get the code</a></strong>
+        </p>
+        <p>
+          <strong><a href="http://t.strokedb.com/">Tumblog</a></strong>
+        </p>
+        <p>
+          <strong><a href="faq.html">FAQ</a></strong>
+        </p>
+        <br/>
+        <p>
+          <a href="#st">Current status</a>
+        </p>
+        <p>
+          <a href="#slides">Slides</a>
+        </p>
+        <p>
+          <a href="#contacts">Contacts</a>
+        </p>
+      </div>
+      
+    <!-- end of container -->  
+    </div>
+    
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+    _uacct = "UA-1584663-4";
+    urchinTracker();
+    </script>
+    
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
