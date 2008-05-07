@@ -20,7 +20,7 @@
         color:#0033ff;
       }
       p, ul {
-        font: 1.2em serif;
+        font: 1em serif;
         color:#333333;
         margin:0.3em 0 1em 0;
       }
@@ -80,6 +80,11 @@
         background:#ffff44;
         padding:1em;
       }
+      p.note {
+		font-size: 80%;
+		background: #ffffe0;
+	 }
+
     </style>
 	</head>
   <body>
@@ -107,32 +112,28 @@
         <br/>
         We are trying to solve these issues with StrokeDB.
       </p>
-      <p>
+      <p class="note">
         <em>Check out this <a href="http://blog.labnotes.org/2007/09/20/read-consistency-dumb-databases-smart-services/">article on dumb databases and read/write consistency</a> (September 20, 2007). It describes the main issues with RDBMS and clarifies our intentions. Actually, I’ve never seen it before today (March 24, 2008), but it is so-o true. It is a must-read for everyone interested in a StrokeDB.</em>
       </p>
       
       <h1>Features</h1>
       <ul>
         <li>Flat address space of documents identified by <a href="http://en.wikipedia.org/wiki/UUID" title="Universal Unique Identifier">UUIDs</a>.</li>
-        <li><a href="http://www.json.org/" title="JavaScript Object Notation">JSON</a>, schemaless document format.</li>
-        <li>Flexible object-oriented API for documents operations. 
-            Much nicer and consistent than <a href="http://rubyonrails.com">ActiveRecord</a> API.</li>
+        <li><a href="http://www.json.org/" title="JavaScript Object Notation">JSON</a>-like, schemaless document format.</li>
+        <li>Automatic document version control.</li>
         <li>Meta documents with serialized definitions and executable code mixins.</li>
-        <li>Documents revision control with diff/merge facilities built-in.</li>
-        <li>References to other documents with automatic eager loading on access.</li>
-        <li>Chunked storages (allowing you to distribute the data across the cluster).</li>
-        <li>Storage chains facility for load balancing.</li>
-        <li>Simple search index over document slots.</li>
-        <li>UTF-8 support built-in. No need to configure encoding in 23 different places like in M*SQL.</li>
-        <li>Two major Ruby implementations support <small>(Ruby 1.8.6, JRuby 1.1RC1)</small>.</li>
-        <li>Unit-, integration- and regression tests using RSpec.</li>
+		<li>Application domains separation</li>
+		<li>Eagerly loaded document references</li>
+        <li>Flexible object-oriented API for documents operations.</li>
+        <li>Views (<em>still work in progress, to be completed soon</em>).</li>
+ 		<li><em>...and many more! :)</em></li>
       </ul>
       
         
       <a name="st" href="#"></a>
       <h1>Current status</h1>
       <p>
-        StrokeDB is an experiment. It is only 3 months old 
+        StrokeDB is still an immature software. It is only few months old 
         and contains a clean and working code along with 
         crazy experiments and API inconsistencies.
       </p>
@@ -141,37 +142,16 @@
         however it doesn’t support complex queries. Current version
         includes nice object-oriented API, revision control, 
         simple general-purpose index, memory- and file-based storages, 
-        simple DRb interface, IRb console and incremental views (like in CouchDB). 
-      </p>
-      <p>
-        Also, there are some useful facilities interesting for developers only.
-        Like a collection of <a href="http://gitorious.org/projects/strokedb/repos/mainline/trees/master/strokedb-ruby/lib/sync/stroke_diff">diff/merge algorithms</a> or a portable <a href="http://gitorious.org/projects/strokedb/repos/mainline/blobs/new-storages/strokedb-ruby/lib/util/class_optimization.rb">class optimization framework</a> (allowing you to optimize ruby methods with a native code).
+        simple DRb interface, console and work-in-progress views. 
       </p>
       <p>
         You may track progress using <a href="http://github.com/yrashk/strokedb/">GitHub</a>, 
         our primary repository hosting.
       </p>
+	  <p>
+		You may also want to track our roadmap by visiting our <a href="http://strokedb.lighthouseapp.com/projects/10482-strokedb/tickets?q=state%3Aopen">Lighthouse account</a>
+	  </p>
 
-      <h1>Roadmap</h1>
-      <p>
-        The first “serious” release of the StrokeDB will include all the 
-        features declared above.
-      </p>
-      <p>Further plans include <small>(higher position — higher priority)</small>:</p>
-      <ul>
-        <li>Flexible API for custom search indexes.</li>
-        <li>Advanced network protocols with <a href="http://rubyeventmachine.com">EventMachine</a> and 
-            <a href="http://gitorious.org/projects/eventmachine-utils">EM Utils</a> for distributed access and realtime load analysis.
-        </li>
-        <li>Batch data import from ActiveRecord.</li>
-        <li>Simple HTTP browser and editor (something like git-web, phpMyAdmin etc.).</li>
-        <li>Advanced associations and validations API.</li>
-        <li>Various optimizations using native code (C, Java) 
-            and smarter algorithms to preserve data locality and save network
-            bandwidth.</li>
-        <li>Support for Ruby 1.9 and Rubinius. Ruby 1.9 is a real thing already, however major code review is neccessary. Rubinius doesn’t support important libraries yet (rubygems, activesupport).</li>
-      </ul>
-      
       <a name="slides" href="#"></a>
       <h1>Slides</h1>
       <p>
@@ -218,6 +198,10 @@
       <p>Yurii Rashkovskii, <a href="http://rashkovskii.com">rashkovskii.com</a></p>
       <p>Oleg Andreev, <a href="http://oleganza.wordpress.com">oleganza.wordpress.com</a></p>
     
+	   <p>
+			<center><small style="color: lightgray">Copyright (c) 2008, idbns, inc.</small></center>
+	   </p>
+
     
       <div id="menu">
         <p>
